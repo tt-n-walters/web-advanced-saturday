@@ -16,6 +16,12 @@ textarea {
     color: white;
 }
 
+input {
+    border: none;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
 button {
     background-color: rgba(0, 0, 0, 0.3);
     color: white;

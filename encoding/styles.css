@@ -1,0 +1,22 @@
+body {
+    min-height: 100vh;
+    margin: 0;
+    background-color: skyblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 0 75px 10px rgba(0, 0, 0, 0.4) inset;
+}
+
+textarea {
+    width: 90%;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+button {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+}

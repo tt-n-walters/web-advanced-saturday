@@ -23,27 +23,46 @@ function encode(message) {
 }
 
 
-function decrypt(numbers, offset) {
+function decrypt(numbers, cipherWord) {
     let offsetNumbers = [];
-    for (let n of numbers) {
+    let encodedCipher = encode(cipherWord);
+    for (let i = 0; i < numbers.length; i++) {
+        let n = numbers[i];
+        let cipherN = encodedCipher[i % cipherWord.length];
         n = Number.parseInt(n);
-        if (n != 32) {
-            n += offset
+        console.log(i, n)
+        let offsetN = n + cipherN;
+        console.log(i, offsetN)
+        while (offsetN > 126) {
+            offsetN -= 94;
+            console.log(i, offsetN)
         }
-        if (n > 122) {
-            n -= 26;
-        }
-        offsetNumbers.push(n);
+        offsetNumbers.push(offsetN);
     }
     let decodedMessage = decode(offsetNumbers);
-    console.log(decodedMessage);
+    return decodedMessage;
+}
+
+function encrypt(message, cipherWord) {
+    let encodedMessage = encode(message);
+    let encodedCipher = encode(cipherWord);
+    let encryptedNumbers = [];
+    for (let i = 0; i < message.length; i++) {
+        let n = encodedMessage[i];
+        let cipherN = encodedCipher[i % cipherWord.length];
+        let offsetN = n - cipherN;
+        while (offsetN < 32) {
+            offsetN += 94;
+        }
+        encryptedNumbers.push(offsetN);
+    }
+    return encryptedNumbers;
 }
 
 
-
 function encodeUserMessage() {
-    let encodedMessage = encode(window.message.value);
-    window.numbers.value = encodedMessage;
+    let encodedMessage = encrypt(window.message.value, cipherKeyInput.value);
+    window.numbers.value = decode(encodedMessage);
 }
 
 function decodeUserMessage(event) {
@@ -55,12 +74,13 @@ function decodeUserMessage(event) {
 }
 
 function handleDecryptButton() {
-    for (let i = 0; i < 26; i++) {
-        decrypt(window.numbers.value.split(","), i);
-    }
+    let encodedMessage = encode(window.numbers.value);
+    let decryptedMessage = decrypt(encodedMessage, cipherKeyInput.value);
+    window.message.value = decryptedMessage;
 }
 
 let message = document.getElementById("message");
+let cipherKeyInput = document.getElementById("cipher_key");
 message.addEventListener("keyup", encodeUserMessage);
 
 window.numbers.addEventListener("keyup", decodeUserMessage);
